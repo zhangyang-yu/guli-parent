@@ -8,8 +8,25 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <packaging>pom</packaging>
     <artifactId>service</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.zhangyang</groupId>
+            <artifactId>service-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+<!--        配置热部署-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+<!--        配置测试-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

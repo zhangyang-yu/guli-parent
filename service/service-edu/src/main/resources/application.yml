@@ -10,9 +10,13 @@ spring:
     name: service-edu
   jackson:
     time-zone: GMT+8
-    date-format: yyyy-MM-dd HH-mm-ss
+    date-format: yyyy-MM-dd
   profiles:
     active: dev
+  devtools:
+    restart:
+      poll-interval: 3000ms
+      quiet-period:  2999ms
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

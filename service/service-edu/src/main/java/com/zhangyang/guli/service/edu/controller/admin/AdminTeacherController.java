@@ -6,6 +6,7 @@ import com.zhangyang.guli.service.base.result.R;
 import com.zhangyang.guli.service.edu.entity.Teacher;
 import com.zhangyang.guli.service.edu.fromBean.TeacherQuery;
 import com.zhangyang.guli.service.edu.service.TeacherService;
+import com.zhangyang.guli.service.edu.vo.VoTeacher;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -14,9 +15,12 @@ import org.apiguardian.api.API;
 import org.joda.time.ReadWritableDateTime;
 import org.junit.jupiter.api.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +43,7 @@ public class AdminTeacherController {
     @GetMapping("/list")
     public R getTeacherList()
     {
-        System.out.println("111qq1dadsd11");
+
         List<Teacher> list = teacherService.list();
         if(list==null||list.size()==0)
         {
@@ -51,7 +55,7 @@ public class AdminTeacherController {
 
     @ApiOperation(value = "查询删除指定教师")
     @DeleteMapping("/delete/{id}")
-    public R delete(@ApiParam(value = "用户的id",required = true) @PathVariable Integer id)
+    public R delete(@ApiParam(value = "用户的id",required = true) @PathVariable String id)
     {
         boolean b = teacherService.removeById(id);
         if(b)
@@ -60,33 +64,20 @@ public class AdminTeacherController {
         }
         return R.error().message("id不存在");
     }
-    @ApiModelProperty(value = "分页查询数据")
-    @GetMapping("/page/{pageNum}/{pageSize}")
-    public  R page(@ApiParam(value = "当前页码",required = true)@PathVariable Integer pageNum,@ApiParam(value = "每页的数据数量",required = true)@PathVariable Integer  pageSize)
-    {
-        Page<Teacher> teacherPage = new Page<>(pageNum,pageSize);
-
-        Page<Teacher> page = teacherService.page(teacherPage);
-        if(page==null||page.getSize()==0)
-        {
-            return  R.error().message("查询数据失败");
-        }
-        return R.ok().data("item",page);
-
-    }
     /**
      * 带有查询条件的分页
      */
      @ApiModelProperty(value = "带有查询条件的分页")
-     @PostMapping("/pageContration/{pageNum}/{pageSize}")
+     @GetMapping("/pageContration/{pageNum}/{pageSize}")
      public R fingPage(@ApiParam(value = "当前页码",required = true)@PathVariable Integer pageNum, @ApiParam(value = "每页的数据数量",required = true)@PathVariable Integer  pageSize, TeacherQuery teacherQuery)
      {
+         System.out.println(teacherQuery);
          Page<Teacher> page =  teacherService.pageByCondiation(pageNum,pageSize,teacherQuery);
          if(page==null||page.getSize()==0)
          {
              R.error().message("查询失败");
          }
-      return    R.ok().data("item",page);
+      return    R.ok().data("items",page);
      }
    /**
     * 保存记录
@@ -96,7 +87,9 @@ public class AdminTeacherController {
     public  R save(@RequestBody Teacher teacher)
    {
        teacher.setJoinDate(new Date());
-       teacher.setAvatar("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2672105432,110298061&fm=26&gp=0.jpg");
+       if(StringUtils.isEmpty(teacher.getAvatar())){
+           teacher.setAvatar("http://www.atguigu.com/teacher/new/liyuting.jpg");//设置默认头像地址
+       }
        boolean save = teacherService.save(teacher);
        if(save)
        {
@@ -106,19 +99,20 @@ public class AdminTeacherController {
    }
    @ApiModelProperty(value = "查询指定的teacher")
     @GetMapping("/get/{id}")
-    public  R getTeacher(@ApiParam(value = "指定id",required = true) @PathVariable Integer id)
+    public  R getTeacherById(@ApiParam(value = "指定id",required = true) @PathVariable String id)
    {
        Teacher byId = teacherService.getById(id);
-       System.out.println(byId);
        if(byId!=null)
        {
-          return R.ok().data("item",byId);
+
+           VoTeacher voTeacher=new VoTeacher(byId.getId(),byId.getName(),byId.getJoinDate(),byId.getSort(),byId.getIntro(),byId.getCareer(),byId.getLevel());
+          return R.ok().data("item",voTeacher);
        }
        return  R.error().message("查询失败");
    }
     @ApiModelProperty(value = "更新用户信息")
     @PostMapping("/update")
-    public  R update(@RequestBody Teacher teacher)
+    public  R update(@ApiParam(value = "修改后的教师信息")@RequestBody Teacher teacher)
    {
        boolean b = teacherService.updateById(teacher);
        if(b)
@@ -128,5 +122,17 @@ public class AdminTeacherController {
        return   R.error().message("跟新失败");
    }
 
+    @ApiModelProperty(value = "批量删除数记录")
+    @GetMapping("/batchdelete/{multipleSelection}")
+    public  R batchDelete(@ApiParam(value = "批量删除的教师id") @PathVariable String[] multipleSelection)
+    {
+        System.out.println(multipleSelection);
+        boolean b = teacherService.removeByIds(Arrays.asList(multipleSelection));
+        if(b)
+        {
+            return  R.ok();
+        }
+        return   R.error().message("跟新失败");
+    }
 }
 

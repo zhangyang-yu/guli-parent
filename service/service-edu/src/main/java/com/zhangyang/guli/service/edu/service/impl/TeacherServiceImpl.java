@@ -9,6 +9,9 @@ import com.zhangyang.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 
 /**
@@ -21,7 +24,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> implements TeacherService {
-
+    /**
+     * 分页查询
+     * @param pageNum
+     * @param pageSize
+     * @param teacherQuery
+     * @return
+     */
     @Override
     public Page<Teacher> pageByCondiation(Integer pageNum, Integer pageSize, TeacherQuery teacherQuery) {
         Page<Teacher> teacherPage = new Page<>(pageNum,pageSize);
@@ -51,4 +60,11 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         return  baseMapper.selectPage(teacherPage,teacherQueryWrapper);
 
     }
+
+    /**
+     * 批量删除
+     * @param teacherIdArray
+     * @return
+     */
+
 }

@@ -5,6 +5,8 @@ import com.zhangyang.guli.service.edu.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhangyang.guli.service.edu.fromBean.TeacherQuery;
 
+import java.util.List;
+
 /**
  * <p>
  * 讲师 服务类
@@ -16,4 +18,5 @@ import com.zhangyang.guli.service.edu.fromBean.TeacherQuery;
 public interface TeacherService extends IService<Teacher> {
 
      Page<Teacher> pageByCondiation(Integer pageNum, Integer pageSize, TeacherQuery teacherQuery);
+
 }

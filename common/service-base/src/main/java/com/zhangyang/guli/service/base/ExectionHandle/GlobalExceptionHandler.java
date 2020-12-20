@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public R returnExection(Exception e)
     {
-        log.error(e.getMessage());//记录日志
+        log.error(e.getMessage());//记录日志,把发生的错误打印到日志上
         return R.setResult(ResultCodeEnum.UNKNOWN_REASON);
     }
 }

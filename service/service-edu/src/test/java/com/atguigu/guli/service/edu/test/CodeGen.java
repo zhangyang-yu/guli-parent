@@ -12,14 +12,19 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.zhangyang.guli.service.base.result.R;
+import com.zhangyang.guli.service.edu.feign.OssopenFeignClient;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import sun.net.idn.Punycode;
 
+import java.nio.file.OpenOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CodeGen {
+
    @Test
     public  void  test1(){
        String prefix = "";//用来拼接连接数据库的url地址数据库名称的、根据实际修改
@@ -100,4 +105,6 @@ public class CodeGen {
      SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
      System.out.println(simpleDateFormat.format(calendar.getTime()));
   }
+
+
 }

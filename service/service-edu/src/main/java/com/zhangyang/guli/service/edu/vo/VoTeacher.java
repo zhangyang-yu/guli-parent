@@ -29,4 +29,6 @@ public class VoTeacher {
     private String career;
     @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
     private Integer level;
+    @ApiModelProperty(value = "讲师头像")
+    private String avatar;
 }

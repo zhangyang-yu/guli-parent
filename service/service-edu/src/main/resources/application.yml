@@ -1,5 +1,9 @@
 server:
   port: 8110
+  tomcat:
+    max-threads: 2 #设置tomcat每次最多可以处理多少个请求
+
+
 spring:
   datasource:
     username: root
@@ -17,9 +21,20 @@ spring:
     restart:
       poll-interval: 3000ms
       quiet-period:  2999ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:
     root: info
+
+ribbon:
+#  MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
+  MaxAutoRetriesNextServer: 2 # 重试其他实例的最大重试次数，不包括首次所选的server，默认1
+  ConnectTimeout: 1000
+  ReadTimeout: 1000
+   # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule

@@ -1,0 +1,35 @@
+server:
+  port: 8120
+spring:
+  application:
+    name: service-oss
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd
+  profiles:
+    active: dev
+  devtools:
+    restart:
+      poll-interval: 3000ms
+      quiet-period:  2999ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+logging:
+  level:
+    root: info
+aliyun:
+  oss:
+    scheme: https://
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    accessKeyId: LTAI4G1L87Gosh6rqQAqzdnj
+    accessKeySecret: xNMmhWg0aR9oFode1uiZnEAsavJTaM
+    bucketName: zhangyang0821-gulionline
+ribbon:
+    MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
+    MaxAutoRetriesNextServer: 1 # 重试其他实例的最大重试次数，不包括首次所选的server，默认1
+    ConnectTimeout: 1000
+    ReadTimeout: 1000
+
+
